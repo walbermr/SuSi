@@ -566,11 +566,11 @@ public class SourceSinkFinder {
 			else
 				testInstances.add(inst);
 		}
-		
+
 		try {
 //			instances.randomize(new Random(1337));
 			Classifier classifier = null;
-			if(WEKA_LEARNER_ALL.equals("BayesNet"))			// (IBK / kNN) vs. SMO vs. (J48 vs. JRIP) vs. NaiveBayes // MultiClassClassifier für ClassifierPerformanceEvaluator
+			if(WEKA_LEARNER_ALL.equals("BayesNet"))			// (IBK / kNN) vs. SMO vs. (J48 vs. JRIP) vs. NaiveBayes // MultiClassClassifier fï¿½r ClassifierPerformanceEvaluator
 				classifier = new BayesNet();
 			else if(WEKA_LEARNER_ALL.equals("NaiveBayes"))
 				classifier = new NaiveBayes();
@@ -584,9 +584,17 @@ public class SourceSinkFinder {
 				throw new Exception("Wrong WEKA learner!");
 			
 			ArffSaver saver = new ArffSaver();
+			// saving train instances
 			saver.setInstances(trainInstances);
 			saver.setFile(new File("SourcesSinks_Train.arff"));
 			saver.writeBatch();
+
+			// saving test instances
+			saver.setInstances(testInstances);
+			saver.setFile(new File("SourcesSinks_Test.arff"));
+			saver.writeBatch();
+			// skip all computation, just save files
+			System.exit(0);
 			
 			Evaluation eval = new Evaluation(trainInstances);
 			StringBuffer sb = new StringBuffer();
@@ -741,7 +749,7 @@ public class SourceSinkFinder {
 				throw new RuntimeException("Could not find NO_CATEGORY index");
 
 			Classifier classifier = null;
-			if(WEKA_LEARNER_CATEGORIES.equals("BayesNet"))			// (IBK / kNN) vs. SMO vs. (J48 vs. JRIP) vs. NaiveBayes // MultiClassClassifier für ClassifierPerformanceEvaluator
+			if(WEKA_LEARNER_CATEGORIES.equals("BayesNet"))			// (IBK / kNN) vs. SMO vs. (J48 vs. JRIP) vs. NaiveBayes // MultiClassClassifier fï¿½r ClassifierPerformanceEvaluator
 				classifier = new CutoffClassifier(new BayesNet(), THRESHOLD, noCatIdx);
 			else if(WEKA_LEARNER_CATEGORIES.equals("NaiveBayes"))
 				classifier = new CutoffClassifier(new NaiveBayes(), THRESHOLD, noCatIdx);
