@@ -97,6 +97,7 @@ public class SourceSinkFinder {
 	private final Set<IFeature> featuresCategories = initializeFeaturesCategories();
 	
 	private static String ANDROID;
+	private static String ANDROID_FILE_NAME;
 	
 	private static final HashSet<AndroidMethod> methodsWithPermissions = new HashSet<AndroidMethod>();
 			
@@ -132,6 +133,7 @@ public class SourceSinkFinder {
 			
 			//set Android paths
 			ANDROID = args[0];
+			ANDROID_FILE_NAME = new File(ANDROID).getName();
 
 			SourceSinkFinder sourceSinkFinder = new SourceSinkFinder();
 			sourceSinkFinder.run(inputs, args[args.length - 1]);
@@ -586,12 +588,12 @@ public class SourceSinkFinder {
 			ArffSaver saver = new ArffSaver();
 			// saving train instances
 			saver.setInstances(trainInstances);
-			saver.setFile(new File("SourcesSinks_Train.arff"));
+			saver.setFile(new File("dataset/train/" + ANDROID_FILE_NAME + ".arff"));
 			saver.writeBatch();
 
 			// saving test instances
 			saver.setInstances(testInstances);
-			saver.setFile(new File("SourcesSinks_Test.arff"));
+			saver.setFile(new File("dataset/test/" + ANDROID_FILE_NAME + ".arff"));
 			saver.writeBatch();
 			// skip all computation, just save files
 			System.exit(0);
